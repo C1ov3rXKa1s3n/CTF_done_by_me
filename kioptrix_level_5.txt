@@ -1,0 +1,23 @@
+Description:As per the Nmap report. there are three ports open. When we visit port no 80 it turns out to be a page saying "It works". When we view source code it shows pChart 2.1.3 EXPLOIT NO 1.
+It is vulnerable to Directory Tranversal. By using this exploitation we can go on viewing different files on server. One of the files I found it to be interesting is apache.conf EXPLOIT NO. 2.
+Which shows only Mozila/4.0 is able to visit on port 8080. So we changed the user-agent to Mozila/4.0. Now we can visit port 8080. It is phptax which is vulnerable to Remote Code Execution EXPLOIT NO 3.
+After getting the reverse shell from RCE. We try to escalate the privilege which can be done using EXPLOIT NO 4.Yupp we got Root Shell.
+Exploit Worked:
+1.https://www.exploit-db.com/exploits/31173
+2.usr/local/etc/apache22/httpd.conf
+3.https://www.exploit-db.com/exploits/21665
+4.https://www.exploit-db.com/exploits/28718
+
+# Nmap 7.91 scan initiated Mon Mar 15 01:38:26 2021 as: nmap -A -oN nmap_res.txt 192.168.56.114
+Nmap scan report for 192.168.56.114
+Host is up (0.00033s latency).
+Not shown: 997 filtered ports
+PORT     STATE  SERVICE VERSION
+22/tcp   closed ssh
+80/tcp   open   http    Apache httpd 2.2.21 ((FreeBSD) mod_ssl/2.2.21 OpenSSL/0.9.8q DAV/2 PHP/5.3.8)
+|_http-title: Site doesn't have a title (text/html).
+8080/tcp open   http    Apache httpd 2.2.21 ((FreeBSD) mod_ssl/2.2.21 OpenSSL/0.9.8q DAV/2 PHP/5.3.8)
+|_http-server-header: Apache/2.2.21 (FreeBSD) mod_ssl/2.2.21 OpenSSL/0.9.8q DAV/2 PHP/5.3.8
+
+Service detection performed. Please report any incorrect results at https://nmap.org/submit/ .
+# Nmap done at Mon Mar 15 01:38:54 2021 -- 1 IP address (1 host up) scanned in 27.73 seconds
